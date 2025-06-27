@@ -56,30 +56,30 @@
 
 ### 技術棧選擇
 
-- **框架**: LangChain / CrewAI
-- **LLM**: OpenAI GPT-4 / Claude / Local LLM
-- **向量資料庫**: Chroma / Pinecone / Weaviate
-- **後端**: Python FastAPI / Node.js
-- **前端**: React / Vue.js / Streamlit
-- **資料庫**: PostgreSQL / MongoDB
+- **框架**: LangChain
+- **LLM**: OpenAI GPT-3.5-turbo
+- **資料庫**: SQLite
+- **後端**: Python FastAPI
+- **前端**: Streamlit
 
 ## 實作階段
 
-### Phase 1: MVP版本 (4-6週)
+### Phase 1: MVP版本 ✅ (當前階段)
 
-- [ ] 建立基礎Agent Dispatcher
-- [ ] 實作2-3個核心專家 (攝影、咖啡、鍵盤)
-- [ ] 基本反饋機制
+- [x] 建立基礎Agent Dispatcher
+- [x] 實作3個核心專家 (攝影、咖啡、鍵盤)
+- [x] 基本反饋機制
+- [x] SQLite 資料庫整合
 - [ ] 簡易Web介面
 
-### Phase 2: 功能完善 (6-8週)
+### Phase 2: 功能完善 (未來規劃)
 
 - [ ] 完成所有6個專家領域
 - [ ] 多專家協作機制
 - [ ] 進階反饋和學習系統
 - [ ] 用戶個人化設定
 
-### Phase 3: 優化擴展 (持續進行)
+### Phase 3: 優化擴展 (未來規劃)
 
 - [ ] 效能優化和擴展性改善
 - [ ] 多模態支援 (圖片、語音)
@@ -95,16 +95,27 @@
 
 ## 開發環境設置
 
+**詳細設定請參考 [SETUP.md](SETUP.md)**  
+**快速開始請參考 [QUICKSTART.md](QUICKSTART.md)**
+
 ```bash
-# 建立專案環境
+# 1. 建立專案環境
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+venv\Scripts\activate  # Windows
+source venv/bin/activate  # macOS/Linux
 
-# 安裝依賴
-pip install langchain openai chromadb fastapi uvicorn streamlit
+# 2. 安裝依賴
+pip install -r requirements.txt
 
-# 設置環境變數
-export OPENAI_API_KEY="your-api-key"
+# 3. 設定環境變數
+cp .env.example .env
+# 編輯 .env 檔案，填入您的 OpenAI API 金鑰
+
+# 4. 初始化資料庫
+python src/init_db.py
+
+# 5. 測試基本功能
+python test_basic.py
 ```
 
 ## 專案結構
