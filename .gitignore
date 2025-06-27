@@ -1,51 +1,114 @@
-# Go build artifacts
-/bin/
-/build/
-/dist/
-/out/
-/*.exe
-/*.dll
-/*.so
-/*.dylib
-/*.test
+# 環境變數檔案 - 包含敏感資訊 (API Keys, Tokens)
+.env
+.env.local
+.env.*.local
+secrets.py
+config_secret.py
 
-# Go mod cache
-/pkg/
+# Python 相關
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# Dependency directories (when vendoring)
-/vendor/
+# 虛擬環境
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
 
-# IDEs and editors
-.idea/
+# IDE 相關
 .vscode/
+.idea/
 *.swp
 *.swo
 *.bak
+*~
 
-# Logs and temp files
-*.log
-*.tmp
-
-# OS-specific
+# 作業系統
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 
-# kubeconfig or other sensitive configs
-kubeconfig.yaml
-.kube/
-config.yaml
-secrets/
-certs/
+# 日誌檔案
+*.log
+*.tmp
+logs/
 
-# Docker-related
-.env
+# 資料庫檔案
+*.db
+*.sqlite
+*.sqlite3
+
+# 快取檔案
+.cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# 向量資料庫檔案
+chroma_db/
+vector_store/
+embeddings/
+*.faiss
+
+# 模型檔案 (如果有本地模型)
+models/
+*.bin
+*.safetensors
+*.onnx
+*.pt
+*.pth
+
+# 上傳檔案
+uploads/
+static/uploads/
+user_files/
+
+# AI Agent 相關
+agent_memory/
+conversation_history/
+user_profiles/
+
+# Docker 相關
 .docker/
 docker-compose.override.yml
 
-# ArgoCD generated stuff
-*.argocd-source.*
+# 設定檔案備份
+config.backup.*
+settings.backup.*
 
-# Binary output (custom)
-app-portal
+# 其他暫存檔案
 *.csv
-src/api/__pycache__
+*.xlsx
+*.pdf
+temp/
+tmp/
