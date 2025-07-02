@@ -13,10 +13,10 @@ services:
       - PORT=5000
       - DEBUG=False
     volumes:
-      # 使用 Docker 卷來持久化資料庫，避免檔案掛載問題
-      - ai-agents-data:/app
-      # 掛載整個資料目錄而不是單一檔案
+      # 解決方案1: 掛載整個資料目錄而不是單一檔案
       - ./data:/app/data
+      # 解決方案2: 或者使用 Docker volume
+      # - ai-agents-data:/app/data
       # 可選：掛載日誌目錄
       - ./logs:/app/logs
     restart: unless-stopped
@@ -29,10 +29,11 @@ services:
     networks:
       - ai-agents-network
 
+# 如果使用 Docker volume，取消註解以下部分
+# volumes:
+#   ai-agents-data:
+#     driver: local
+
 networks:
   ai-agents-network:
     driver: bridge
-
-volumes:
-  ai-agents-data:
-    driver: local

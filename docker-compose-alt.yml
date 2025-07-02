@@ -13,15 +13,13 @@ services:
       - PORT=5000
       - DEBUG=False
     volumes:
-      # 使用 Docker 卷來持久化資料庫，避免檔案掛載問題
-      - ai-agents-data:/app
-      # 掛載整個資料目錄而不是單一檔案
-      - ./data:/app/data
-      # 可選：掛載日誌目錄
+      # 掛載整個應用目錄，讓 Docker 自動管理檔案
+      - ./app-data:/app/data
+      # 掛載日誌目錄
       - ./logs:/app/logs
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5000/", "||", "exit", "1"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -32,7 +30,3 @@ services:
 networks:
   ai-agents-network:
     driver: bridge
-
-volumes:
-  ai-agents-data:
-    driver: local
