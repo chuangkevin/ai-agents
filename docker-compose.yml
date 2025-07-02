@@ -2,20 +2,31 @@ version: '3.8'
 
 services:
   ai-agents:
-    build: .
+    # 使用 Docker Hub 上的映像（請將 kevin950805 替換為您的實際用戶名）
+    image: kevin950805/ai-agents:latest
+    container_name: ai-agents-app
     ports:
-      - "8000:8000"
+      - "5000:5000"  # 映像內部使用 5000 埠
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - HOST=0.0.0.0
-      - PORT=8000
+      - PORT=5000
       - DEBUG=False
     volumes:
+      # 持久化資料庫檔案
       - ./ai_agents.db:/app/ai_agents.db
+      # 可選：掛載日誌目錄
+      - ./logs:/app/logs
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
+    networks:
+      - ai-agents-network
+
+networks:
+  ai-agents-network:
+    driver: bridge
