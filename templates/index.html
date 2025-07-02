@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多領域 AI Agent 系統</title>
+    <!-- Markdown 解析庫 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- 程式碼高亮庫 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .experts-info {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .expert-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .expert-name {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .chat-container {
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            height: 400px;
+            overflow-y: auto;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            padding: 12px 18px;
+            border-radius: 18px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        
+        .user-message {
+            background: #667eea;
+            color: white;
+            margin-left: auto;
+            text-align: right;
+        }
+        
+        .ai-message {
+            background: white;
+            border: 2px solid #e9ecef;
+            margin-right: auto;
+        }
+        
+        /* Markdown 內容樣式 */
+        .markdown-content {
+            line-height: 1.6;
+        }
+        
+        .markdown-content h1,
+        .markdown-content h2,
+        .markdown-content h3,
+        .markdown-content h4,
+        .markdown-content h5,
+        .markdown-content h6 {
+            margin-top: 1em;
+            margin-bottom: 0.5em;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .markdown-content h1 { font-size: 1.5em; }
+        .markdown-content h2 { font-size: 1.3em; }
+        .markdown-content h3 { font-size: 1.1em; }
+        
+        .markdown-content p {
+            margin-bottom: 1em;
+        }
+        
+        .markdown-content ul,
+        .markdown-content ol {
+            margin-bottom: 1em;
+            padding-left: 1.5em;
+        }
+        
+        .markdown-content li {
+            margin-bottom: 0.5em;
+        }
+        
+        .markdown-content strong {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .markdown-content em {
+            font-style: italic;
+        }
+        
+        .markdown-content code {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #e83e8c;
+        }
+        
+        .markdown-content pre {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1em;
+            margin: 1em 0;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+        
+        .markdown-content pre code {
+            background: transparent;
+            border: none;
+            padding: 0;
+            color: inherit;
+        }
+        
+        .markdown-content blockquote {
+            border-left: 4px solid #667eea;
+            background: #f8f9fa;
+            margin: 1em 0;
+            padding: 0.5em 1em;
+            font-style: italic;
+        }
+        
+        .markdown-content table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1em 0;
+        }
+        
+        .markdown-content th,
+        .markdown-content td {
+            border: 1px solid #e9ecef;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        
+        .markdown-content th {
+            background: #f8f9fa;
+            font-weight: bold;
+        }
+        
+        .markdown-content a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .markdown-content a:hover {
+            text-decoration: underline;
+        }
+        
+        .expert-badge {
+            display: inline-block;
+            background: #764ba2;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-bottom: 8px;
+        }
+        
+        .input-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .question-input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .question-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .send-button {
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .send-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .send-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            background: #ff6b6b;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 多領域 AI Agent</h1>
+        
+        <div class="experts-info">
+            <h3 style="margin-bottom: 15px; color: #333;">📚 可用專家</h3>
+            <div id="experts-list">
+                <div class="loading"></div> 載入專家資訊中...
+            </div>
+        </div>
+        
+        <div class="chat-container" id="chat-container">
+            <div class="message ai-message">
+                <div class="expert-badge">系統</div>
+                <div>歡迎使用多領域 AI Agent 系統！我可以為您提供攝影、咖啡、機械鍵盤等領域的專業建議。請隨時提問！</div>
+            </div>
+        </div>
+        
+        <div class="input-container">
+            <input type="text" id="question-input" class="question-input" placeholder="請輸入您的問題..." onkeypress="handleKeyPress(event)">
+            <button id="send-button" class="send-button" onclick="sendQuestion()">發送</button>
+        </div>
+    </div>
+
+    <script>
+        let isLoading = false;
+
+        // 載入專家列表
+        async function loadExperts() {
+            try {
+                const response = await fetch('/api/experts');
+                const data = await response.json();
+                
+                if (data.success) {
+                    const expertsHtml = data.experts.map(expert => `
+                        <div class="expert-item">
+                            <div class="expert-name">${expert.name}</div>
+                            <div>${expert.description}</div>
+                        </div>
+                    `).join('');
+                    
+                    document.getElementById('experts-list').innerHTML = expertsHtml;
+                } else {
+                    document.getElementById('experts-list').innerHTML = '<div class="error-message">載入專家資訊失敗</div>';
+                }
+            } catch (error) {
+                document.getElementById('experts-list').innerHTML = '<div class="error-message">載入專家資訊失敗</div>';
+            }
+        }
+
+        // 發送問題
+        async function sendQuestion() {
+            if (isLoading) return;
+            
+            const input = document.getElementById('question-input');
+            const question = input.value.trim();
+            
+            if (!question) {
+                alert('請輸入問題');
+                return;
+            }
+            
+            // 添加用戶訊息
+            addMessage(question, 'user');
+            input.value = '';
+            
+            // 設置載入狀態
+            setLoading(true);
+            
+            try {
+                const response = await fetch('/api/ask', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ question: question })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    addMessage(data.response, 'ai', data.expert, data.expert_description);
+                } else {
+                    addMessage(`錯誤：${data.error}`, 'ai', '系統');
+                }
+            } catch (error) {
+                addMessage(`網路錯誤：${error.message}`, 'ai', '系統');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // 添加訊息到聊天室
+        function addMessage(content, type, expert = '', expertDescription = '') {
+            const chatContainer = document.getElementById('chat-container');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}-message`;
+            
+            if (type === 'ai' && expert) {
+                // 解析 Markdown 內容
+                const parsedContent = parseMarkdown(content);
+                messageDiv.innerHTML = `
+                    <div class="expert-badge">${expert}</div>
+                    <div class="markdown-content">${parsedContent}</div>
+                `;
+            } else if (type === 'ai') {
+                const parsedContent = parseMarkdown(content);
+                messageDiv.innerHTML = `<div class="markdown-content">${parsedContent}</div>`;
+            } else {
+                messageDiv.innerHTML = `<div>${content}</div>`;
+            }
+            
+            chatContainer.appendChild(messageDiv);
+            
+            // 高亮程式碼區塊
+            if (type === 'ai') {
+                messageDiv.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightElement(block);
+                });
+            }
+            
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // 解析 Markdown 內容
+        function parseMarkdown(content) {
+            // 配置 marked 選項
+            marked.setOptions({
+                breaks: true,
+                gfm: true,
+                headerIds: false,
+                mangle: false
+            });
+            
+            return marked.parse(content);
+        }
+
+        // 設置載入狀態
+        function setLoading(loading) {
+            isLoading = loading;
+            const button = document.getElementById('send-button');
+            const input = document.getElementById('question-input');
+            
+            if (loading) {
+                button.innerHTML = '<div class="loading"></div> 思考中...';
+                button.disabled = true;
+                input.disabled = true;
+            } else {
+                button.innerHTML = '發送';
+                button.disabled = false;
+                input.disabled = false;
+                input.focus();
+            }
+        }
+
+        // 處理 Enter 鍵
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !isLoading) {
+                sendQuestion();
+            }
+        }
+
+        // 頁面載入完成後載入專家列表
+        document.addEventListener('DOMContentLoaded', function() {
+            loadExperts();
+            document.getElementById('question-input').focus();
+        });
+    </script>
+</body>
+</html>
