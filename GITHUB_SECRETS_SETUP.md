@@ -90,3 +90,19 @@ DOCKER_PASSWORD = dckr_pat_1234567890abcdef... (Access Token)
 - **絕不在代碼中暴露 Access Token**
 - **只在 GitHub Secrets 中設定敏感資訊**
 - **定期更換 Access Token**
+
+## 🔒 常見 GitHub Actions 錯誤
+
+### 安全掃描權限錯誤
+如果看到 "Resource not accessible by integration" 錯誤：
+
+1. **這是正常的** - 不會影響 Docker 映像構建
+2. **主要功能仍正常** - Docker 映像會成功推送到 Docker Hub
+3. **安全掃描可選** - 這只是額外的安全檢查功能
+
+### 如何確認部署成功
+即使看到安全掃描錯誤，只要看到：
+- ✅ "Build and Push Docker Image" 步驟成功
+- ✅ Docker Hub 上有新的映像
+
+就表示部署成功！
