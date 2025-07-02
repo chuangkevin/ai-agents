@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y \
 
 # 複製 requirements.txt 並安裝 Python 依賴
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --no-cache-dir -r requirements.txt
 
 # 複製應用程式代碼
 COPY . .
