@@ -4,11 +4,11 @@ services:
     image: kevin950805/ai-agents:latest
     container_name: ai-agents-app
     ports:
-      - "5000:5000"  # 映像內部使用 5000 埠
+      - "5000:8000"  # 將本地 5000 埠映射到容器內的 8000 埠
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - HOST=0.0.0.0
-      - PORT=5000
+      - PORT=8000  # 容器內使用 8000 埠
       - DEBUG=False
     volumes:
       # 使用 Docker 卷來持久化資料庫，避免檔案掛載問題
@@ -19,7 +19,7 @@ services:
       - ./logs:/app/logs
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
       interval: 30s
       timeout: 10s
       retries: 3
