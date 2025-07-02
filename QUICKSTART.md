@@ -1,6 +1,22 @@
 # 快速開始指南
 
-## 🚀 第一次設定
+## 🚀 一鍵啟動（推薦）
+
+### Windows 用戶
+```powershell
+# PowerShell 啟動（推薦）
+.\start.ps1
+
+# 或使用批次檔
+quick_start.bat
+```
+
+### 手動啟動
+```bash
+python start_simple.py
+```
+
+## 🛠️ 第一次詳細設定
 
 ### 1. 建立虛擬環境並安裝依賴
 
@@ -19,7 +35,7 @@ pip install -r requirements.txt
 
 ```bash
 # 複製環境變數範本
-cp .env.example .env
+copy .env.example .env
 
 # 編輯 .env 檔案，填入您的 OpenAI API 金鑰
 # OPENAI_API_KEY=sk-your-actual-api-key-here
