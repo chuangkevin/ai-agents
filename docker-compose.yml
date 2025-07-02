@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   ai-agents:
     # 使用 Docker Hub 上的映像（請將 kevin950805 替換為您的實際用戶名）
