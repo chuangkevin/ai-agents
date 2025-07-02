@@ -70,7 +70,47 @@
 - [x] 實作3個核心專家 (攝影、咖啡、鍵盤)
 - [x] 基本反饋機制
 - [x] SQLite 資料庫整合
-- [ ] 簡易Web介面
+- [ ] 簡易Web介面 ✅
+
+## 🐳 Docker 快速啟動
+
+```bash
+# 1. 設定環境變數
+cp .env.example .env
+# 編輯 .env 檔案，填入您的 OpenAI API 金鑰
+
+# 2. 一鍵啟動
+docker-compose up --build -d
+
+# 3. 訪問服務
+# Web界面: http://localhost:8000
+# 健康檢查: http://localhost:8000/api/health
+```
+
+**詳細Docker指南**: [DOCKER_GUIDE.md](DOCKER_GUIDE.md)
+
+## 🚀 CI/CD 自動化部署
+
+本專案支援 GitHub Actions 自動構建和推送 Docker 映像到 Docker Hub。
+
+### 快速設定
+
+1. **設定 GitHub Secrets**:
+   - `DOCKER_USERNAME`: 您的 Docker Hub 用戶名
+   - `DOCKER_PASSWORD`: 您的 Docker Hub Access Token
+
+2. **推送代碼觸發構建**:
+   ```bash
+   git push origin main
+   ```
+
+3. **使用構建的映像**:
+   ```bash
+   docker pull your-username/ai-agents:latest
+   docker run -d -p 8000:8000 --env-file .env your-username/ai-agents:latest
+   ```
+
+**詳細CI/CD指南**: [CICD_GUIDE.md](CICD_GUIDE.md)
 
 ### Phase 2: 功能完善 (未來規劃)
 
